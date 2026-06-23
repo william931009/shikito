@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Shikito">
+  <rect width="512" height="512" rx="96" fill="#0d2b57"/>
+  <path d="M90 353h332v36H90z" fill="#ff7a1a"/>
+  <path d="M132 130h248v42H132zm0 84h248v42H132zm0 84h188v42H132z" fill="#ffffff"/>
+  <circle cx="371" cy="319" r="50" fill="#1f9d8a"/>
+  <path d="M355 319l13 13 29-34" fill="none" stroke="#fff" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

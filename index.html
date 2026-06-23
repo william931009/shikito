@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0d2b57" />
+    <meta
+      name="description"
+      content="識途 Shikito 智慧軌道隨行系統手機版 PWA 原型"
+    />
+    <title>識途 Shikito</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./assets/shikito-icon.svg" />
+    <link rel="stylesheet" href="./styles.css?v=6" />
+  </head>
+  <body>
+    <div class="app-shell" id="appShell">
+      <header class="topbar">
+        <div class="brand-lockup" aria-label="Shikito">
+          <div class="brand-mark">識</div>
+          <div>
+            <p class="eyebrow">Shikito</p>
+            <h1 data-i18n="appTitle">智慧軌道隨行</h1>
+          </div>
+        </div>
+        <button class="icon-button" id="installButton" type="button" aria-label="安裝">
+          <i data-lucide="download"></i>
+        </button>
+      </header>
+
+      <main class="view-stack">
+        <section class="view is-active" data-view="assistant" aria-labelledby="assistantTitle">
+          <div class="status-strip">
+            <div>
+              <span class="live-dot"></span>
+              <span data-i18n="apiStatus">Google Transit 真實查詢</span>
+            </div>
+            <strong id="clockText">23:32</strong>
+          </div>
+
+          <div class="hero-panel">
+            <div>
+              <p class="eyebrow" data-i18n="oneVoice">一句話完成跨運具旅程</p>
+              <h2 id="assistantTitle" data-i18n="assistantTitle">今天要去哪裡？</h2>
+            </div>
+            <button class="round-mic" id="voiceButton" type="button" aria-label="語音輸入">
+              <i data-lucide="mic"></i>
+            </button>
+          </div>
+
+          <div class="quick-grid" id="quickPrompts"></div>
+
+          <section class="chat-panel" aria-label="對話">
+            <div class="message-list" id="messageList"></div>
+            <form class="composer" id="queryForm">
+              <input
+                id="queryInput"
+                name="query"
+                autocomplete="off"
+                data-i18n-placeholder="inputPlaceholder"
+                placeholder="例如：我要從中壢車站到台北車站，現在出發"
+              />
+              <button class="send-button" type="submit" aria-label="送出">
+                <i data-lucide="send-horizontal"></i>
+              </button>
+            </form>
+          </section>
+        </section>
+
+        <section class="view" data-view="route" aria-labelledby="routeTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="routingEyebrow">Routing</p>
+              <h2 id="routeTitle" data-i18n="routeTitle">建議路線</h2>
+            </div>
+            <button class="chip-button" id="replanButton" type="button">
+              <i data-lucide="refresh-cw"></i>
+              <span data-i18n="replan">重規劃</span>
+            </button>
+          </div>
+
+          <div class="route-search">
+            <label>
+              <span data-i18n="from">出發地</span>
+              <input id="fromInput" value="中壢車站" />
+            </label>
+            <button class="swap-button" id="swapRoute" type="button" aria-label="交換">
+              <i data-lucide="arrow-up-down"></i>
+            </button>
+            <label>
+              <span data-i18n="to">目的地</span>
+              <input id="toInput" value="台北車站" />
+            </label>
+          </div>
+
+          <div class="control-row">
+            <label class="toggle-card">
+              <input type="checkbox" id="accessibleToggle" checked />
+              <span>
+                <strong data-i18n="accessibleFirst">少走路優先</strong>
+                <small data-i18n="accessibleMeta">以 Google Transit 的步行段落作為比較基礎</small>
+              </span>
+            </label>
+          </div>
+
+          <div id="routeSummary"></div>
+          <div class="map-panel" id="mapPanel">
+            <div id="map"></div>
+          </div>
+          <div id="routeTimeline"></div>
+          <div class="directions-panel" id="directionsPanel"></div>
+        </section>
+
+        <section class="view" data-view="live" aria-labelledby="liveTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="liveEyebrow">Transit Data</p>
+              <h2 id="liveTitle" data-i18n="liveTitle">轉乘時刻</h2>
+            </div>
+            <span class="pill" id="syncText">Google</span>
+          </div>
+          <div class="alert-stack" id="alertStack"></div>
+          <div class="live-board" id="liveBoard"></div>
+          <div class="service-note-panel" id="serviceNotePanel"></div>
+        </section>
+
+        <section class="view" data-view="saved" aria-labelledby="savedTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="personalEyebrow">Personalization</p>
+              <h2 id="savedTitle" data-i18n="savedTitle">我的識途</h2>
+            </div>
+            <button class="chip-button" id="saveCurrentRoute" type="button">
+              <i data-lucide="star"></i>
+              <span data-i18n="save">收藏</span>
+            </button>
+          </div>
+
+          <section class="settings-panel api-panel" id="apiPanel">
+            <div>
+              <p class="eyebrow">Google Maps API</p>
+              <h3 data-i18n="apiSettings">API 設定</h3>
+              <p data-i18n="apiHelp">
+                請填入已啟用 Maps JavaScript API 與 Directions API (Legacy) 的 Google Maps API Key。
+              </p>
+            </div>
+            <div class="api-form">
+              <input id="googleKeyInput" type="password" placeholder="Google Maps API Key" />
+              <button id="saveGoogleKeyButton" type="button" data-i18n="saveKey">儲存</button>
+            </div>
+            <p class="api-status-message" id="apiStatusMessage"></p>
+          </section>
+
+          <section class="settings-panel">
+            <h3 data-i18n="language">語言</h3>
+            <div class="segmented" role="group" aria-label="Language">
+              <button type="button" class="is-selected" data-lang="zh">中文</button>
+              <button type="button" data-lang="en">EN</button>
+              <button type="button" data-lang="ja">日本語</button>
+              <button type="button" data-lang="ko">한국어</button>
+            </div>
+          </section>
+
+          <section class="settings-panel">
+            <h3 data-i18n="favorites">常用路線</h3>
+            <div id="favoriteRoutes"></div>
+          </section>
+        </section>
+      </main>
+
+      <nav class="bottom-nav" aria-label="主要導覽">
+        <button class="is-active" type="button" data-nav="assistant">
+          <i data-lucide="message-circle"></i>
+          <span data-i18n="navAssistant">助理</span>
+        </button>
+        <button type="button" data-nav="route">
+          <i data-lucide="route"></i>
+          <span data-i18n="navRoute">路線</span>
+        </button>
+        <button type="button" data-nav="live">
+          <i data-lucide="radio"></i>
+          <span data-i18n="navLive">時刻</span>
+        </button>
+        <button type="button" data-nav="saved">
+          <i data-lucide="user-round"></i>
+          <span data-i18n="navSaved">我的</span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="./app.js?v=6" type="module"></script>
+  </body>
+</html>
